@@ -1,63 +1,79 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import registrationFormSchema from './validation';
 import { Link } from 'react-router-dom';
-import { Grid, Box } from '@mui/material';
+import { Stack, Box, Alert, Paper, Grid, styled } from '@mui/material';
+import { registerWithEmail } from '../../../modules/auth/actions'
+import { useHistory } from 'react-router';
 
 const Registration = () => {
-  const { formState: { errors }, handleSubmit, control } = useForm({
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const serverError = useSelector(state => state.auth.serverErrors);
+
+  const { formState, handleSubmit, control } = useForm({
     resolver: yupResolver(registrationFormSchema)
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { errors } = formState;
+
+  const onSuccess = () => {
+    history.push("/dashboard");
   }
 
-  const onError = (data) => {
-    console.log(errors);
+  const onSubmit = (data) => {
+    dispatch(registerWithEmail(data, onSuccess))
   }
+
+  const Item = styled(Box)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+  }));
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', minWidth: '100vw' }}>
-      <form className='registration form' onSubmit={handleSubmit(onSubmit, onError)}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+      <form className='registration form' onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2}>
+          <Item>
             <Controller
-              name="login"
+              name="email"
               control={control}
               defaultValue=""
-              render={({ field }) => <TextField {...field} id="outlined-basic" label="login" variant="outlined" />}
+              render={({ field }) => <TextField {...field} fullWidth id="outlined-basic" label="email" variant="outlined" />}
             />
-            {errors && errors.login && <Box component="span" sx={{ display: 'block' }}>{errors.login}</Box>}
-          </Grid>
-          <Grid item xs={12}>
+            {errors && errors.email && <Alert severity="error">{errors.email.message}</Alert>}
+          </Item>
+          <Item>
             <Controller
               name="password"
               control={control}
               defaultValue=""
-              render={({ field }) => <TextField {...field} id="outlined-basic" label="Password" variant="outlined" />}
+              render={({ field }) => <TextField {...field} fullWidth id="outlined-basic" label="Password" variant="outlined" />}
             />
-            errors && errors.password && <Box component="span" sx={{ display: 'block' }}>errors.password</Box>
-          </Grid>
-          <Grid item xs={12}>
+            {errors && errors.password && <Alert severity="error">{errors.password.message}</Alert>}
+          </Item>
+          <Item>
             <Controller
               name="confirmPassword"
               control={control}
               defaultValue=""
-              render={({ field }) => <TextField {...field} id="outlined-basic" label="ConfirmPassword" variant="outlined" />}
+              render={({ field }) => <TextField {...field} fullWidth id="outlined-basic" label="ConfirmPassword" variant="outlined" />}
             />
-            errors && errors.confirmPassword && <Box component="span" sx={{ display: 'block' }}>errors.confirmPassword</Box>
-          </Grid>
-          <Grid item xs={12}>
+            {errors && errors.confirmPassword && <Alert severity="error">{errors.confirmPassword.message}</Alert>}
+            {serverError && <Alert severity="error">{serverError}</Alert>}
+          </Item>
+          <Item>
             <Button variant="contained" type='submit'>Submit</Button>
-          </Grid>
-          <Grid item xs={12}>
+          </Item>
+          <Item>
             <Link to="/login">Sign In</Link>
-          </Grid>
-        </Grid>
+          </Item>
+        </Stack>
       </form>
     </Box>
   )

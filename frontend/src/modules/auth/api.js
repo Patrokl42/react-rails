@@ -1,32 +1,13 @@
-import request from '../request';
-import { objectToFormData } from '../../helpers/functions';
+import axios from 'axios';
 
 export const Auth = {
-	registerWithEmail(userData) {
-		return request.postFormData('client/register', objectToFormData(userData));
+	registrationWithEmail(user) {
+		return axios.post("http://localhost:3100/registrations", user, { withCredentials: true })
 	},
-	registerWithFacebook(access_token, email, zip) {
-		return request.post('client/register/facebook', { access_token, email, zip });
+	loginWithEmail(user) {
+		return axios.post("http://localhost:3100/sessions", user, { withCredentials: true })
 	},
-	registerWithGoogle(access_token) {
-		return request.post('client/register/google', { access_token });
-	},
-	registerWithTwitter(access_token, secret_token, email, zip) {
-		return request.post('client/register/twitter', { access_token, secret_token, email, zip });
-	},
-	registerWithApple(access_token) {
-		return request.post('client/register/apple', { access_token });
-	},
-	login(data) {
-		return request.post('oauth/token', data, false);
-	},
-	resetPassword(email) {
-		return request.post('client/password/reset', email);
-	},
-	recoveryPassword(data) {
-		return request.post('client/password/recover', data);
-	},
-	getUserEmailFromTwitter(access_token, secret_token) {
-		return request.get('client/twitter/user', { access_token, secret_token });
+	checkLoginStatus() {
+		return axios.get("http://localhost:3100/logged_in", { withCredentials: true })
 	}
 };
