@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import Login from './containers/Auth/Login';
 import Registration from './containers/Auth/Registration';
 import Dashboard from './containers/Dashboard';
+import StartPage from './containers/StartPage';
 import { checkLoginStatus } from './modules/auth/actions'
 import './App.css';
 
@@ -14,6 +15,7 @@ function App() {
   return (
     <Box>
       <Switch>
+        <Route path="/" component={StartPage} exact />
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/dashboard" component={Dashboard} />

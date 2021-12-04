@@ -63,7 +63,7 @@ const Login = () => {
             <Button variant="contained" type='submit'>Submit</Button>
           </Item>
           <Item>
-            <Link to="/login">Sign In</Link>
+            <Link to="/registration">Sign In</Link>
           </Item>
         </Stack>
       </form>

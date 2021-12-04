@@ -47,12 +47,15 @@ export const registerWithEmail = (user, onSuccess) => async dispatch => {
 };
 
 export const checkLoginStatus = () => async dispatch => {
-	const res = await Auth.checkLoginStatus()
-	console.log(res);
+	try {
+		const res = await Auth.checkLoginStatus();
+		console.log(res);
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 const loginWithEmailSuccess = (userCredentials, onSuccess) => async dispatch => {
-	console.log(322);
 	const res = await Auth.loginWithEmail(userCredentials)
 	console.log(res);
 
@@ -81,9 +84,7 @@ export const loginWithEmail = (user, onSuccess) => async dispatch => {
 	});
 
 	try {
-		console.log(userCredentials);
 		const res = await Auth.loginWithEmail(userCredentials)
-		console.log(res);
 		loginWithEmailSuccess(userCredentials, onSuccess);
 	} catch (error) {
 		loginWithEmailFail(error);

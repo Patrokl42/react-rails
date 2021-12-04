@@ -1,13 +1,20 @@
 import axios from 'axios';
+const service = axios.create({
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json',
+	},
+	withCredentials: true
+});
 
 export const Auth = {
 	registrationWithEmail(user) {
-		return axios.post("http://localhost:3100/registrations", user, { withCredentials: true })
+		return service.post("http://localhost:3100/registrations", user)
 	},
 	loginWithEmail(user) {
-		return axios.post("http://localhost:3100/sessions", user, { withCredentials: true })
+		return service.post("http://localhost:3100/sessions", user)
 	},
 	checkLoginStatus() {
-		return axios.get("http://localhost:3100/logged_in", { withCredentials: true })
+		return service.get("http://localhost:3100/logged_in")
 	}
 };
