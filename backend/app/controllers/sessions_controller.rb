@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     else
       render json: {
         logged_in: false
-      }
+      }, status: :unauthorized
     end
   end
 

@@ -1,4 +1,3 @@
-import { values } from 'lodash';
 import { Auth } from './api';
 import {
 	REGISTER_WITH_EMAIL,
@@ -12,16 +11,19 @@ import {
 	CHECK_LOGIN_STATUS_FAIL
 } from './types';
 
-const registerWithEmailSuccess = (userCredentials, onSuccess) => async dispatch => {
-	const res = await Auth.registrationWithEmail(userCredentials)
+import {
+	setUser,
+	clearUser
+} from '../user/actions.js'
 
+const registerWithEmailSuccess = (data, onSuccess) => async dispatch => {
 	dispatch({
 		type: REGISTER_WITH_EMAIL_SUCCESS,
-		payload: res.data.user
+		payload: data
 	});
 
+	dispatch(setUser(data.user));
 	onSuccess();
-	return res;
 }
 
 const registerWithEmailFail = (error) => async dispatch => {
@@ -35,37 +37,24 @@ const registerWithEmailFail = (error) => async dispatch => {
 export const registerWithEmail = (user, onSuccess) => async dispatch => {
 	const userCredentials = { user: { email: user.email, password: user.password, password_confirmation: user.confirmPassword } }
 
-	dispatch({
-		type: REGISTER_WITH_EMAIL
-	});
+	dispatch({ type: REGISTER_WITH_EMAIL });
 
 	try {
-		registerWithEmailSuccess(userCredentials, onSuccess);
+		const res = await Auth.registrationWithEmail(userCredentials)
+		dispatch(registerWithEmailSuccess(res.data, onSuccess));
 	} catch (error) {
-		registerWithEmailFail(error);
+		dispatch(registerWithEmailFail(error));
 	}
 };
 
-export const checkLoginStatus = () => async dispatch => {
-	try {
-		const res = await Auth.checkLoginStatus();
-		console.log(res);
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-const loginWithEmailSuccess = (userCredentials, onSuccess) => async dispatch => {
-	const res = await Auth.loginWithEmail(userCredentials)
-	console.log(res);
-
+const loginWithEmailSuccess = (data, onSuccess) => async dispatch => {
 	dispatch({
 		type: LOGIN_WITH_EMAIL_SUCCESS,
-		payload: res.data.user
+		payload: data.user
 	});
 
-	// onSuccess();
-	// return res;
+	dispatch(setUser(data.user));
+	onSuccess();
 }
 
 const loginWithEmailFail = (error) => async dispatch => {
@@ -79,14 +68,42 @@ const loginWithEmailFail = (error) => async dispatch => {
 export const loginWithEmail = (user, onSuccess) => async dispatch => {
 	const userCredentials = { user: { email: user.email, password: user.password } }
 
-	dispatch({
-		type: LOGIN_WITH_EMAIL
-	});
+	dispatch({ type: LOGIN_WITH_EMAIL });
 
 	try {
 		const res = await Auth.loginWithEmail(userCredentials)
-		loginWithEmailSuccess(userCredentials, onSuccess);
+		dispatch(loginWithEmailSuccess(res.data, onSuccess));
 	} catch (error) {
-		loginWithEmailFail(error);
+		dispatch(loginWithEmailFail(error));
 	}
 };
+
+const checkLoginStatusSuccess = (data, onSuccess) => async dispatch => {
+	dispatch({
+		type: CHECK_LOGIN_STATUS_SUCCESS,
+		payload: data.user
+	});
+
+	dispatch(setUser(data.user));
+	onSuccess();
+}
+
+const checkLoginStatusFail = (error) => async dispatch => {
+	console.log(error);
+	dispatch({
+		type: CHECK_LOGIN_STATUS_FAIL
+	});
+	throw error;
+}
+
+
+export const checkLoginStatus = (onSuccess) => async dispatch => {
+	dispatch({ type: CHECK_LOGIN_STATUS });
+
+	try {
+		const res = await Auth.checkLoginStatus();
+		dispatch(checkLoginStatusSuccess(res.data, onSuccess))
+	} catch (error) {
+		dispatch(checkLoginStatusFail(error));
+	}
+}

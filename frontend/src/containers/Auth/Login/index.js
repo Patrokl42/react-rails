@@ -35,8 +35,6 @@ const Login = () => {
     textAlign: 'center',
   }));
 
-  console.log(serverError);
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', minWidth: '100vw' }}>
       <form className='registration form' onSubmit={handleSubmit(onSubmit)}>

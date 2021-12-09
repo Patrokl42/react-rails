@@ -1,8 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
 
 const Dashboard = () => {
+  const user = useSelector(state => state.user.user);
+
   return (
-    <h1>Dashbord!</h1>
+    <h1>Hey, {user.email}</h1>
   )
 }
 

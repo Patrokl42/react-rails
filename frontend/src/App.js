@@ -1,25 +1,27 @@
-import React, { useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
-import { Box } from '@mui/material';
+import React from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import { Box, CssBaseline } from '@mui/material';
 import Login from './containers/Auth/Login';
 import Registration from './containers/Auth/Registration';
-import Dashboard from './containers/Dashboard';
 import StartPage from './containers/StartPage';
-import { checkLoginStatus } from './modules/auth/actions'
+import NotFound from './containers/NotFound'
+import AuthenticatedRouter from './containers/AuthenticatedRouter';
 import './App.css';
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => { dispatch(checkLoginStatus()) }, [])
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  console.log(isAuthenticated);
+
   return (
     <Box>
+      <CssBaseline />
       <Switch>
         <Route path="/" component={StartPage} exact />
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
-        <Route path="/dashboard" component={Dashboard} />
       </Switch>
+      <AuthenticatedRouter />
     </Box>
   );
 }
