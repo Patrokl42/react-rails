@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
         user: user
       }
     else
-      render json: { status: 401 }
+      render json: { logged_in: false }, status: :unauthorized
     end
   end 
 
@@ -23,11 +23,9 @@ class SessionsController < ApplicationController
       render json: {
         logged_in: true,
         user: @current_user
-      }
+      }, status: :ok
     else
-      render json: {
-        logged_in: false
-      }, status: :unauthorized
+      render json: { logged_in: false }, status: :unauthorized
     end
   end
 

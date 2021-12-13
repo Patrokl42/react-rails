@@ -4,17 +4,18 @@ const service = axios.create({
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
 	},
+	baseURL: 'http://localhost:3100',
 	withCredentials: true
 });
 
 export const Auth = {
 	registrationWithEmail(user) {
-		return service.post("http://localhost:3100/registrations", user)
+		return service.post("/registrations", user)
 	},
 	loginWithEmail(user) {
-		return service.post("http://localhost:3100/sessions", user)
+		return service.post("/sessions", user)
 	},
 	checkLoginStatus() {
-		return service.get("http://localhost:3100/logged_in")
+		return service.get("/logged_in")
 	}
 };

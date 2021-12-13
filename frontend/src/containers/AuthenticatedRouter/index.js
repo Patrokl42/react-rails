@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
-import Dashboard from '../Dashboard';
+import React, { useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import Navigation from '../../components/Naviation';
-import { checkLoginStatus } from '../../modules/auth/actions';
+import Exercises from '../Exercises';
+import Dashboard from '../Dashboard';
 import { Box } from '@mui/material';
 
 const AuthenticatedRouter = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  useEffect(() => { dispatch(checkLoginStatus(() => history.push('/dashboard'))) }, []);
-
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -26,10 +20,11 @@ const AuthenticatedRouter = () => {
     <>
       <Navigation handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} open={open} />
       <Box sx={{
-        padding: '64px 0 0 0'
+        padding: `64px 0 0 73px`
       }}>
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/exercises" component={Exercises} />
         </Switch>
       </Box>
     </>

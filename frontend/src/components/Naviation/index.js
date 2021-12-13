@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -16,6 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const drawerWidth = 240;
 
@@ -116,23 +119,27 @@ export default function Navigation({ open, handleDrawerOpen, handleDrawerClose }
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Exercises'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <Link to='/exercises' style={{ display: 'inherit' }}>
+                <ListItemIcon>
+                  <FitnessCenterIcon />
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </Link>
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Dashboard'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <Link to='/dashboard' style={{ display: 'inherit' }}>
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </Link>
             </ListItem>
           ))}
         </List>

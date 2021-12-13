@@ -12,7 +12,7 @@ import {
 
 const initialState = {
 	isAuthenticated: !!localStorage.getItem('access_token'),
-	loading: false,
+	loading: true,
 	serverErrors: null,
 };
 
@@ -23,53 +23,55 @@ const authReducer = (state = initialState, action) => {
 		case REGISTER_WITH_EMAIL:
 			return {
 				...state,
-				isLoading: true
+				loading: false
 			}
 		case REGISTER_WITH_EMAIL_SUCCESS:
 			return {
 				...state,
-				isAuthenticated: true
+				isAuthenticated: true,
+				loading: false
 			}
 		case REGISTER_WITH_EMAIL_FAIL:
 			return {
 				...state,
 				isAuthenticated: false,
+				loading: false,
 				serverErrors: payload.error.message
 			}
 		case LOGIN_WITH_EMAIL:
 			return {
 				...state,
-				isLoading: true
+				loading: true
 			}
 		case LOGIN_WITH_EMAIL_SUCCESS:
 			return {
 				...state,
 				isAuthenticated: true,
-				isLoading: false
+				loading: false
 			}
 		case LOGIN_WITH_EMAIL_FAIL:
 			return {
 				...state,
 				isAuthenticated: false,
 				serverErrors: payload.error.message,
-				isLoading: false
+				loading: false
 			}
 		case CHECK_LOGIN_STATUS:
 			return {
 				...state,
-				isLoading: true
+				loading: true
 			}
 		case CHECK_LOGIN_STATUS_SUCCESS:
 			return {
 				...state,
 				isAuthenticated: true,
-				isLoading: false
+				loading: false
 			}
 		case CHECK_LOGIN_STATUS_FAIL:
 			return {
 				...state,
 				isAuthenticated: false,
-				isLoading: false
+				loading: false
 			}
 		default:
 			return state;

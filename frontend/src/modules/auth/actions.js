@@ -97,7 +97,7 @@ const checkLoginStatusFail = (error) => async dispatch => {
 }
 
 
-export const checkLoginStatus = (onSuccess) => async dispatch => {
+export const checkLoginStatus = (onSuccess = () => { }) => async dispatch => {
 	dispatch({ type: CHECK_LOGIN_STATUS });
 
 	try {

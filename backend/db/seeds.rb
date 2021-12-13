@@ -5,3 +5,17 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'faker'
+
+users = User.create([
+                      {
+                        email: 'test@gmail.com',
+                        password: '12345678'
+                      }
+                    ])
+
+50.times do |index|
+  Exercise.create!(title: Faker::Esport.game,
+                   exercise_type: index % 2 === 0 ? 'cardio' : 'weight lifting',
+                   description: Faker::Lorem.paragraph(sentence_count: 3, supplemental: true, random_sentences_to_add: 4))
+end
